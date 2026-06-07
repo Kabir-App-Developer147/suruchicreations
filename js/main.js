@@ -1,26 +1,26 @@
 /* ============================================================
-   GURMIT LAMBA ART — MAIN JS
+   GURMIT LAMBA ART — MAIN JS (ASYNC LIVE SYSTEM)
    ============================================================ */
 
-// ── NAVBAR SCROLL ──────────────────────────────────
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ── MOBILE MENU ────────────────────────────────────
 function toggleMenu() {
   const links = document.getElementById('navLinks');
   if (links) links.classList.toggle('open');
 }
 
 // ── FEATURED PRODUCTS (HOMEPAGE) ──────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const grid = document.getElementById('featuredGrid');
   const empty = document.getElementById('featuredEmpty');
   if (!grid) return;
 
-  const products = getProducts().filter(p => p.featured && p.stock === 'available');
+  const rawProducts = await getProducts();
+  const products = rawProducts.filter(p => p.featured && p.stock === 'available');
+  
   if (products.length === 0) {
     if (empty) empty.style.display = 'flex';
     return;
@@ -32,32 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ── SHARED: CREATE PRODUCT CARD ─────────────────────
 function createProductCard(product) {
   const card = document.createElement('div');
   card.className = 'product-card';
   card.onclick = () => openProductModal(product);
 
   const imgSrc = product.images && product.images.length > 0 ? product.images[0] : null;
-  const statusClass = {
-    available: 'status-available',
-    sold: 'status-sold',
-    reserved: 'status-reserved',
-    custom: 'status-custom'
-  }[product.stock] || 'status-available';
-
-  const statusLabel = {
-    available: 'Available',
-    sold: 'Sold',
-    reserved: 'Reserved',
-    custom: 'Custom Order'
-  }[product.stock] || 'Available';
+  const statusClass = { available: 'status-available', sold: 'status-sold', reserved: 'status-reserved', custom: 'status-custom' }[product.stock] || 'status-available';
+  const statusLabel = { available: 'Available', sold: 'Sold', reserved: 'Reserved', custom: 'Custom Order' }[product.stock] || 'Available';
 
   card.innerHTML = `
     <div class="product-card-img">
-      ${imgSrc
-        ? `<img src="${imgSrc}" alt="${product.name}" loading="lazy" />`
-        : `<div class="no-img">◈</div>`}
+      ${imgSrc ? `<img src="${imgSrc}" alt="${product.name}" loading="lazy" />` : `<div class="no-img">◈</div>`}
       <span class="product-status ${statusClass}">${statusLabel}</span>
     </div>
     <div class="product-card-body">
@@ -80,12 +66,10 @@ function getCategoryLabel(cat) {
   return { resin: 'Resin Art', painting: 'Painting', other: 'Other' }[cat] || cat;
 }
 
-// ── PRODUCT MODAL ──────────────────────────────────
 function openProductModal(product) {
   const overlay = document.getElementById('productOverlay');
   const inner   = document.getElementById('productModalInner');
   if (!overlay || !inner) {
-    // On homepage, redirect to shop
     window.location.href = 'shop.html';
     return;
   }
@@ -93,9 +77,7 @@ function openProductModal(product) {
   const imgSrc = product.images && product.images.length > 0 ? product.images[0] : null;
   inner.innerHTML = `
     <div class="product-modal-gallery">
-      ${imgSrc
-        ? `<img src="${imgSrc}" alt="${product.name}" />`
-        : `<div style="aspect-ratio:4/5;background:var(--cream-dark);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--amber-light)">◈</div>`}
+      ${imgSrc ? `<img src="${imgSrc}" alt="${product.name}" />` : `<div style="aspect-ratio:4/5;background:var(--cream-dark);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--amber-light)">◈</div>`}
     </div>
     <div class="product-modal-info">
       <span class="section-tag">${getCategoryLabel(product.category)}</span>
@@ -123,7 +105,6 @@ function closeProductModal(event) {
   document.body.style.overflow = '';
 }
 
-// ── CHECKOUT MODAL ─────────────────────────────────
 function openCheckout() {
   closeCart();
   const cart = getCart();
@@ -149,108 +130,36 @@ function closeCheckoutModal(event) {
 }
 
 // ── PLACE ORDER ────────────────────────────────────
-function placeOrder() {
+async function placeOrder() {
   const name    = document.getElementById('buyerName')?.value.trim();
   const email   = document.getElementById('buyerEmail')?.value.trim();
   const address = document.getElementById('buyerAddress')?.value.trim();
   const phone   = document.getElementById('buyerPhone')?.value.trim();
   const note    = document.getElementById('buyerNote')?.value.trim();
 
-  if (!name || !email || !address) {
-    showToast('Please fill in your name, email, and address.');
-    return;
-  }
-  if (!validateEmail(email)) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
+  if (!name || !email || !address) { showToast('Please fill in your name, email, and address.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.'); return; }
 
   const cart = getCart();
-  if (cart.length === 0) {
-    showToast('Your cart is empty.');
-    return;
-  }
+  if (cart.length === 0) { showToast('Your cart is empty.'); return; }
 
   const orderId   = 'GL-' + Date.now();
   const total     = cart.reduce((s, i) => s + Number(i.price), 0);
   const orderDate = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-  // Build email body for artist via mailto
   const itemLines = cart.map(i => `  • ${i.name} — ₹${Number(i.price).toLocaleString('en-IN')}`).join('\n');
-  const emailBody = `ORDER RECEIVED — ${orderId}
-Date: ${orderDate}
+  const emailBody = `ORDER RECEIVED — ${orderId}\nDate: ${orderDate}\n\nCUSTOMER DETAILS\nName: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nAddress: ${address}\nNote: ${note || 'None'}\n\nORDER ITEMS\n${itemLines}\n\nTOTAL: ₹${total.toLocaleString('en-IN')}\n`;
 
-CUSTOMER DETAILS
-Name:    ${name}
-Email:   ${email}
-Phone:   ${phone || 'Not provided'}
-Address: ${address}
-Note:    ${note || 'None'}
+  // Pipeline execution across shared live system table
+  await saveOrderToDB({ id: orderId, date: orderDate, customer: { name, email, phone, address, note }, items: cart, total, status: 'new' });
 
-ORDER ITEMS
-${itemLines}
+  window.open(`mailto:gurmitlamba3@gmail.com?subject=New Order ${orderId} — ₹${total.toLocaleString('en-IN')}&body=${encodeURIComponent(emailBody)}`, '_blank');
 
-TOTAL: ₹${total.toLocaleString('en-IN')}
-
-Please contact the customer to arrange payment and shipping.
-`;
-
-  // Save order to localStorage
-  const orders = JSON.parse(localStorage.getItem('gl_orders') || '[]');
-  orders.unshift({
-    id: orderId,
-    date: orderDate,
-    customer: { name, email, phone, address, note },
-    items: cart,
-    total,
-    status: 'new'
-  });
-  localStorage.setItem('gl_orders', JSON.stringify(orders));
-
-  // Open email client (artist receives invoice)
-  const artistMailto = `mailto:gurmitlamba3@gmail.com?subject=New Order ${orderId} — ₹${total.toLocaleString('en-IN')}&body=${encodeURIComponent(emailBody)}`;
-  window.open(artistMailto, '_blank');
-
-  // Also open customer copy
-  const customerBody = `Dear ${name},
-
-Thank you for your order from Gurmit Lamba Art!
-
-ORDER CONFIRMATION — ${orderId}
-Date: ${orderDate}
-
-${itemLines}
-
-TOTAL: ₹${total.toLocaleString('en-IN')}
-
-Gurmit will contact you soon at ${email}${phone ? ' / ' + phone : ''} to arrange payment and shipping.
-
-Warm regards,
-Gurmit Lamba
-📞 +91 91407 42898
-✉ gurmitlamba3@gmail.com
-`;
-  setTimeout(() => {
-    const customerMailto = `mailto:${email}?subject=Your Order Confirmation — ${orderId}&body=${encodeURIComponent(customerBody)}`;
-    window.open(customerMailto, '_blank');
-  }, 800);
-
-  // Clear cart and close modal
   clearCart();
   closeCheckoutModal();
-  showToast(`Order placed! Invoice sent. Order ID: ${orderId}`);
+  showToast(`Order placed! Order ID: ${orderId}`);
 }
 
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// ── DATA HELPERS ───────────────────────────────────
-function getProducts() {
-  return JSON.parse(localStorage.getItem('gl_products') || '[]');
-}
-
-// ── TOAST ──────────────────────────────────────────
 function showToast(msg) {
   const t = document.createElement('div');
   t.className = 'toast';

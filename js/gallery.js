@@ -1,19 +1,19 @@
 /* ============================================================
-   GURMIT LAMBA ART — GALLERY JS
+   GURMIT LAMBA ART — GALLERY JS (ASYNC LIVE SYSTEM)
    ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderGallery();
-  renderVideos();
+document.addEventListener('DOMContentLoaded', async () => {
+  await renderGallery();
+  await renderVideos();
 });
 
-function renderGallery() {
+async function renderGallery() {
   const grid  = document.getElementById('galleryGrid');
   const empty = document.getElementById('galleryEmpty');
   if (!grid) return;
 
-  const products = JSON.parse(localStorage.getItem('gl_products') || '[]')
-    .filter(p => p.inGallery && p.images && p.images.length > 0);
+  const rawProducts = await getProducts();
+  const products = rawProducts.filter(p => p.inGallery && p.images && p.images.length > 0);
 
   if (products.length === 0) {
     if (empty) empty.style.display = 'flex';
@@ -39,8 +39,8 @@ function renderGallery() {
   });
 }
 
-function renderVideos() {
-  const videos = JSON.parse(localStorage.getItem('gl_videos') || '[]');
+async function renderVideos() {
+  const videos = await getVideos();
   const section = document.getElementById('videoSection');
   const grid    = document.getElementById('videoGrid');
   if (!section || !grid) return;
@@ -54,10 +54,7 @@ function renderVideos() {
     card.className = 'video-card';
 
     let mediaHtml = '';
-    if (video.fileData) {
-      mediaHtml = `<video controls preload="metadata"><source src="${video.fileData}" /></video>`;
-    } else if (video.url) {
-      // Embed YouTube/Vimeo
+    if (video.url) {
       const embedUrl = toEmbedUrl(video.url);
       mediaHtml = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
     }
@@ -73,27 +70,23 @@ function renderVideos() {
 }
 
 function toEmbedUrl(url) {
-  // Convert YouTube watch URL to embed
   if (url.includes('youtube.com/watch')) {
     const v = new URL(url).searchParams.get('v');
     return `https://www.youtube.com/embed/${v}`;
   }
   if (url.includes('youtu.be/')) {
-    const v = url.split('youtu.be/')[1].split('?')[0];
-    return `https://www.youtube.com/embed/${v}`;
+    return `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0]}`;
   }
   if (url.includes('vimeo.com/')) {
-    const v = url.split('vimeo.com/')[1].split('?')[0];
-    return `https://player.vimeo.com/video/${v}`;
+    return `https://player.vimeo.com/video/${url.split('vimeo.com/')[1].split('?')[0]}`;
   }
-  return url; // assume already embed URL
+  return url;
 }
 
-// ── LIGHTBOX ─────────────────────────────────────
 function openLightbox(src, caption) {
-  const lb      = document.getElementById('lightbox');
-  const img     = document.getElementById('lightboxImg');
-  const capEl   = document.getElementById('lightboxCaption');
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  const capEl = document.getElementById('lightboxCaption');
   if (!lb || !img) return;
   img.src = src;
   img.alt = caption;
@@ -107,6 +100,4 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
