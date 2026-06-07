@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Gurmit Lamba Art</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <a href="index.html" style="text-decoration:none;color:inherit">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </a>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-cart" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="page-header">
+    <h1>Gallery</h1>
+    <p>A visual journey through resin, colour, and texture</p>
+  </section>
+
+  <section class="gallery-section section">
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Populated by gallery.js -->
+    </div>
+    <div class="gallery-empty" id="galleryEmpty" style="display:none">
+      <div class="empty-icon">✦</div>
+      <h3>Gallery coming soon</h3>
+      <p>Pieces are being photographed and added shortly.</p>
+    </div>
+
+    <!-- Video Gallery Section -->
+    <div class="video-section" id="videoSection" style="display:none">
+      <div class="section-header" style="margin-top:4rem">
+        <span class="section-tag">Process Videos</span>
+        <h2>Watch the Art Come Alive</h2>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </div>
+      <div class="footer-links">
+        <a href="gallery.html">Gallery</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-contact">
+        <p>gurmitlamba3@gmail.com</p>
+        <p>+91 91407 42898</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2025 Gurmit Lamba. All rights reserved.</div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h3>Your Cart</h3><button onclick="closeCart()">✕</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary full-width" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="checkoutOverlay" onclick="closeCheckoutModal(event)">
+    <div class="checkout-modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeCheckoutModal()">✕</button>
+      <h3>Complete Your Order</h3>
+      <div class="checkout-form">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="buyerName" placeholder="Your name" /></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="buyerEmail" placeholder="your@email.com" /></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="buyerPhone" placeholder="+91 XXXXX XXXXX" /></div>
+        <div class="form-group"><label>Shipping Address *</label><textarea id="buyerAddress" rows="3" placeholder="Full delivery address"></textarea></div>
+        <div class="form-group"><label>Note for Artist</label><textarea id="buyerNote" rows="2" placeholder="Any special instructions..."></textarea></div>
+        <div class="checkout-order-summary" id="checkoutSummary"></div>
+        <button class="btn-primary full-width" onclick="placeOrder()">Place Order & Send Invoice</button>
+        <p class="checkout-note">An invoice will be emailed to both you and the artist.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/cart.js"></script>
+  <script src="js/gallery.js"></script>
+</body>
+</html>

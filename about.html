@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Gurmit Lamba Art</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <a href="index.html" style="text-decoration:none;color:inherit">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </a>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-cart" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="page-header">
+    <h1>About Gurmit</h1>
+    <p>The artist, the vision, the process</p>
+  </section>
+
+  <section class="about-full section">
+    <div class="about-full-grid">
+      <div class="about-full-visual">
+        <div class="about-blob large">
+          <div class="blob-inner">
+            <div class="blob-symbol">✦</div>
+            <span class="blob-text">Artist &<br/>Creator</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-full-text">
+        <span class="section-tag">The Story</span>
+        <h2>Art That Breathes</h2>
+        <p>Gurmit Lamba is a self-taught artist whose love for colour and texture led her to the world of resin art. Working from her studio in India, she creates pieces that capture movement, depth, and light in a way few other mediums can.</p>
+        <p>Her work spans resin pours, abstract paintings, decorative objects, and bespoke commissions. Each piece is made entirely by hand — mixed, poured, and finished with meticulous care over several days.</p>
+        <p>Gurmit believes that art should feel alive. Her resin pieces shift in colour as light changes throughout the day, making each one a living companion in your space.</p>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Handmade</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">∞</span>
+            <span class="stat-label">Unique Pieces</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">♡</span>
+            <span class="stat-label">Made with Love</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-section">
+      <div class="section-header">
+        <span class="section-tag">The Process</span>
+        <h2>How a Piece is Born</h2>
+      </div>
+      <div class="process-timeline">
+        <div class="timeline-item">
+          <div class="timeline-num">01</div>
+          <div class="timeline-content">
+            <h4>Concept & Colour</h4>
+            <p>Each piece begins with a colour story — inspired by nature, memory, or feeling. Pigments are chosen and mixed before a single drop of resin is poured.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-num">02</div>
+          <div class="timeline-content">
+            <h4>The Pour</h4>
+            <p>Resin is mixed and poured in layers. Each layer must cure before the next — a process of patience that can span several days for complex pieces.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-num">03</div>
+          <div class="timeline-content">
+            <h4>Finishing</h4>
+            <p>Once fully cured, pieces are sanded, polished, and sealed to a glass-like finish. Details are added and the work is inspected before being photographed.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-num">04</div>
+          <div class="timeline-content">
+            <h4>Finding Its Home</h4>
+            <p>Every piece is packed carefully and shipped — ready to become part of your space.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </div>
+      <div class="footer-links">
+        <a href="gallery.html">Gallery</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-contact">
+        <p>gurmitlamba3@gmail.com</p>
+        <p>+91 91407 42898</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2025 Gurmit Lamba. All rights reserved.</div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h3>Your Cart</h3><button onclick="closeCart()">✕</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary full-width" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="checkoutOverlay"><div class="checkout-modal"><button class="modal-close" onclick="closeCheckoutModal()">✕</button><h3>Complete Your Order</h3><div class="checkout-form"><div class="form-group"><label>Full Name *</label><input type="text" id="buyerName" /></div><div class="form-group"><label>Email *</label><input type="email" id="buyerEmail" /></div><div class="form-group"><label>Phone</label><input type="tel" id="buyerPhone" /></div><div class="form-group"><label>Shipping Address *</label><textarea id="buyerAddress" rows="3"></textarea></div><div class="form-group"><label>Note</label><textarea id="buyerNote" rows="2"></textarea></div><div class="checkout-order-summary" id="checkoutSummary"></div><button class="btn-primary full-width" onclick="placeOrder()">Place Order</button></div></div></div>
+
+  <script src="js/cart.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

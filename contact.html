@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Gurmit Lamba Art</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <a href="index.html" style="text-decoration:none;color:inherit">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </a>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <button class="nav-cart" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="page-header">
+    <h1>Get in Touch</h1>
+    <p>Commissions, questions, collaborations — all welcome</p>
+  </section>
+
+  <section class="contact-section section">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="section-tag">Reach Out</span>
+        <h2>Let's Create Something Together</h2>
+        <p>Whether you're looking for a specific piece, want a custom commission, or simply have a question — Gurmit would love to hear from you.</p>
+
+        <div class="contact-details">
+          <div class="contact-detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.07 2.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div>
+              <h4>Phone / WhatsApp</h4>
+              <a href="tel:+919140742898">+91 91407 42898</a>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:gurmitlamba3@gmail.com">gurmitlamba3@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h4>Response Time</h4>
+              <p style="color:var(--text-muted)">Usually within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrapper">
+        <form class="contact-form" id="contactForm" onsubmit="sendContactForm(event)">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="contactName" required placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="contactEmail" required placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="contactPhone" placeholder="+91 XXXXX XXXXX" />
+          </div>
+          <div class="form-group">
+            <label>Subject *</label>
+            <select id="contactSubject" required>
+              <option value="">Select a topic</option>
+              <option value="commission">Custom Commission</option>
+              <option value="availability">Piece Availability</option>
+              <option value="shipping">Shipping Query</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message *</label>
+            <textarea id="contactMessage" rows="5" required placeholder="Tell Gurmit about your vision, colour preferences, size requirements..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary full-width">Send Message</button>
+          <div class="form-success" id="formSuccess" style="display:none">
+            <div class="success-icon">✓</div>
+            <p>Message sent! Gurmit will be in touch soon.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">Gurmit Lamba</span>
+        <span class="logo-sub">Resin & Fine Art</span>
+      </div>
+      <div class="footer-links">
+        <a href="gallery.html">Gallery</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-contact">
+        <p>gurmitlamba3@gmail.com</p>
+        <p>+91 91407 42898</p>
+      </div>
+    </div>
+    <div class="footer-copy">© 2025 Gurmit Lamba. All rights reserved.</div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h3>Your Cart</h3><button onclick="closeCart()">✕</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary full-width" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script src="js/cart.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    function sendContactForm(e) {
+      e.preventDefault();
+      // In a real setup, this would call a backend/email service
+      // For now, shows success and opens mailto as fallback
+      const name = document.getElementById('contactName').value;
+      const email = document.getElementById('contactEmail').value;
+      const subject = document.getElementById('contactSubject').value;
+      const message = document.getElementById('contactMessage').value;
+
+      const mailtoLink = `mailto:gurmitlamba3@gmail.com?subject=Website Enquiry: ${encodeURIComponent(subject)}&body=From: ${encodeURIComponent(name)} (${encodeURIComponent(email)})%0A%0A${encodeURIComponent(message)}`;
+      window.open(mailtoLink);
+
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
