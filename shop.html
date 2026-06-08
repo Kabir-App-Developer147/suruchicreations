@@ -123,16 +123,71 @@
     </div>
   </div>
 
-  <!-- Product Detail Modal -->
   <div class="modal-overlay" id="productOverlay" onclick="closeProductModal(event)">
     <div class="product-modal" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeProductModal()">✕</button>
       <div class="product-modal-inner" id="productModalInner"></div>
     </div>
   </div>
-  
+
   <script src="js/db.js"></script>
   <script src="js/cart.js"></script>
-  <script src="js/shop.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    let allShopProducts = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Fetch products using your working cloud engine function
+      if (typeof getProducts === 'function') {
+        allShopProducts = await getProducts();
+      } else {
+        console.error("Database connection function 'getProducts' is missing.");
+        return;
+      }
+      
+      // 2. Initial presentation of all live works
+      renderShopGrid(allShopProducts);
+    });
+
+    function renderShopGrid(productsList) {
+      const grid = document.getElementById('shopGrid');
+      const empty = document.getElementById('shopEmpty');
+      if (!grid) return;
+
+      // Clean out existing product cards, but leave the shopEmpty node untouched
+      const activeCards = grid.querySelectorAll('.product-card');
+      activeCards.forEach(card => card.remove());
+
+      // 3. Toggle empty layout if zero records returned
+      if (productsList.length === 0) {
+        if (empty) empty.style.display = 'flex';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      // 4. Inject matching products using the unified global components layout
+      productsList.forEach(product => {
+        grid.appendChild(createProductCard(product));
+      });
+    }
+
+    // 5. Category routing handler tied directly to button filter triggers
+    function filterProducts(category, buttonElement) {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      
+      if (buttonElement) {
+        buttonElement.classList.add('active');
+      }
+
+      if (!category || category === 'all') {
+        renderShopGrid(allShopProducts);
+      } else {
+        const filteredData = allShopProducts.filter(p => p.category === category);
+        renderShopGrid(filteredData);
+      }
+    }
+  </script>
 </body>
 </html>
