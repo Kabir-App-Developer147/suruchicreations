@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
+// ── SHARED MODULE: COMPONENT UI CARDS ──────────────────
 function createProductCard(product) {
   const card = document.createElement('div');
   card.className = 'product-card';
@@ -66,6 +67,7 @@ function getCategoryLabel(cat) {
   return { resin: 'Resin Art', painting: 'Painting', other: 'Other' }[cat] || cat;
 }
 
+// ── SYSTEM MODALS (PRODUCT VIEW) ───────────────────────
 function openProductModal(product) {
   const overlay = document.getElementById('productOverlay');
   const inner   = document.getElementById('productModalInner');
@@ -129,7 +131,7 @@ function closeCheckoutModal(event) {
   document.body.style.overflow = '';
 }
 
-// ── PLACE ORDER ────────────────────────────────────
+// ── PLACE ORDER PIPELINE ─────────────────────────────────
 async function placeOrder() {
   const name    = document.getElementById('buyerName')?.value.trim();
   const email   = document.getElementById('buyerEmail')?.value.trim();
@@ -147,11 +149,13 @@ async function placeOrder() {
   const total     = cart.reduce((s, i) => s + Number(i.price), 0);
   const orderDate = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-  const itemLines = cart.map(i => `  • ${i.name} — ₹${Number(i.price).toLocaleString('en-IN')}`).join('\n');
+  const itemLines = cart.map(i => `   • ${i.name} — ₹${Number(i.price).toLocaleString('en-IN')}`).join('\n');
   const emailBody = `ORDER RECEIVED — ${orderId}\nDate: ${orderDate}\n\nCUSTOMER DETAILS\nName: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nAddress: ${address}\nNote: ${note || 'None'}\n\nORDER ITEMS\n${itemLines}\n\nTOTAL: ₹${total.toLocaleString('en-IN')}\n`;
 
-  // Pipeline execution across shared live system table
-  await saveOrderToDB({ id: orderId, date: orderDate, customer: { name, email, phone, address, note }, items: cart, total, status: 'new' });
+  // Save transaction context to cloud orders table
+  if (typeof saveOrderToDB === 'function') {
+    await saveOrderToDB({ id: orderId, date: orderDate, customer: { name, email, phone, address, note }, items: cart, total, status: 'new' });
+  }
 
   window.open(`mailto:gurmitlamba3@gmail.com?subject=New Order ${orderId} — ₹${total.toLocaleString('en-IN')}&body=${encodeURIComponent(emailBody)}`, '_blank');
 
