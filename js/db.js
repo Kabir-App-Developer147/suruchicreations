@@ -3,7 +3,7 @@
    ============================================================ */
 
 // TODO: Replace these with your actual Supabase Project configuration tokens
-const SUPABASE_URL = "https://znfczlamyiccmavrgyin.supabase.co ";
+const SUPABASE_URL = "https://znfczlamyiccmavrgyin.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZmN6bGFteWljY21hdnJneWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MjgwMzIsImV4cCI6MjA5NjQwNDAzMn0.l6SsEP0E-JREF59jFBtbXVlw6NQTbtZeYfjIa3VieRE";
 
 const dbHeaders = {
